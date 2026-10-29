@@ -1,0 +1,47 @@
+name: CI - TypeScript Buggy App
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Manuel tetikleme için
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Type check (tsc --noEmit)
+        run: npm run lint
+        # Bu adım tip hatalarından dolayı BAŞARISIZ olabilir
+
+      - name: Build
+        run: npm run build
+        # Tip hataları varsa build de fail olur
+
+      - name: Run tests
+        run: npm test
+        # add ve average testleri fail olacak
+
+      - name: Upload test results (opsiyonel)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            coverage/
+            dist/
+          retention-days: 7
