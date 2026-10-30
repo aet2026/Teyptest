@@ -5,7 +5,7 @@
 
 export function add(a: number, b: number): number {
   // HATA 1: Yanlış işlem - toplama yerine çıkarma yapıyor
-  return a - b;
+  return a + b;
 }
 
 export function multiply(a: number, b: number): number {
@@ -24,7 +24,7 @@ export function average(numbers: number[]): number {
   // HATA 3: Toplamı yanlış hesaplıyor (reduce yerine sadece ilk elemanı alıyor gibi)
   const sum = numbers.reduce((acc, n) => acc + n, 0);
   // HATA 4 (mantık): length yerine length - 1 kullanıyor
-  return sum / (numbers.length - 1);
+  return sum / numbers.length;
 }
 
 // HATA 5 (TypeScript tip hatası): Parametre tipi yanlış, string bekleniyor ama number veriliyor
